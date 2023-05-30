@@ -32,13 +32,13 @@ public class BookController {
     @GetMapping("/add")
     public String addBookForm(Model model) {
         model.addAttribute("book", new Book());
-        model.addAttribute("categories", categoryService.getAllCategorys());
+        model.addAttribute("categories", categoryService.getAllCategories());
         return "book/add";
     }
     @PostMapping("/add")
     public String addBook(@Valid @ModelAttribute("book") Book book,  BindingResult result, Model model) {
         if(result.hasErrors()) {
-            model.addAttribute("categories", categoryService.getAllCategorys());
+            model.addAttribute("categories", categoryService.getAllCategories());
             return "book/add";
         }
         else {
@@ -47,70 +47,28 @@ public class BookController {
         }
     }
 
-//    @GetMapping("/edit/{id}")
-//    public String editBookForm(@PathVariable("id") Long id, Model model) {
-////        Book editBook = bookService.getBookById(id);
-//        Optional<Book> editBook = Optional.ofNullable(bookService.getBookById(id));
-//        if(editBook.isPresent()){
-//            model.addAttribute("book", editBook);
-//            model.addAttribute("categories", categoryService.getAllCategorys());
-//            return "book/edit";
-//        }
-//        else{
-//            return "not-found";
-//        }
-//    }
-//    @PostMapping("/edit/{id}")
-//    public String editBook(@Valid @ModelAttribute("book") Book book, BindingResult result, Model model) {
-//        if(result.hasErrors()){
-//            model.addAttribute("categories", categoryService.getAllCategorys());
-//            return "book/edit/" + book.getId();
-//        }
-//        else {
-//            Book editBook = bookService.getBookById(book.getId());
-//            bookService.updateBook(editBook);
-//            return "redirect:/books";
-//        }
-//    }
-
     @GetMapping("/edit/{id}")
     public String editBookForm(@PathVariable("id") Long id, Model model) {
-//        List<Book> books = bookService.getAllBooks();
-//        Optional<Book> editBook = books.stream()
-//                .filter(book -> book.getId().equals(id))
-//                .findFirst();
-//        if(editBook.isPresent()) {
-//            model.addAttribute("book", editBook.get());
-//            model.addAttribute("categories", categoryService.getAllCategorys());
-//            return "book/edit";
-//        }
-//        else {
-//            return "not-found";
-//        }
         Book editBook = bookService.getBookById(id);
         if(editBook == null){
             return "not-found";
         }
         else{
-            model.addAttribute("book", bookService.getBookById(id));
-            model.addAttribute("categories", categoryService.getAllCategorys());
+            model.addAttribute("book", editBook);
+            model.addAttribute("categories", categoryService.getAllCategories());
             return "book/edit";
         }
 
     }
-    @PostMapping("/edit/{id}")
-    public String editBook(@PathVariable("id") Long id, @Valid @ModelAttribute("book") Book book, BindingResult result,Model model) {
-//        List<Book> books = bookService.getAllBooks();
-//        books.stream()
-//                .filter(b -> b.getId() == book.getId())
-//                .findFirst()
-//                .ifPresent(b -> books.set(books.indexOf(b), book));
-//        return "redirect:/books";
+    @PostMapping("/edit")
+    public String editBook(@Valid @ModelAttribute("book") Book book, BindingResult result, Model model) {
         if(result.hasErrors()) {
+            model.addAttribute("categories", categoryService.getAllCategories());
+
             return "book/edit";
         }
         else {
-            bookService.updateBook(id, book);
+            bookService.updateBook(book);
             return "redirect:/books";
         }
     }

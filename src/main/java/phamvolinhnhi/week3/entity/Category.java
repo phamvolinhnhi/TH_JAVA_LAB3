@@ -1,6 +1,8 @@
 package phamvolinhnhi.week3.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 import java.util.List;
@@ -12,9 +14,13 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(name = "name")
+    @NotEmpty(message = "Name must not be empty")
+    @Size(max=20, min = 1, message = "Title must be less than 50 characters")
     private String name;
-    @ManyToMany(mappedBy = "category", cascade = CascadeType.ALL)
+
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private List<Book> books;
 
     public Long getId() {
@@ -44,9 +50,8 @@ public class Category {
     public Category() {
     }
 
-    public Category(Long id, String name, List<Book> books) {
+    public Category(Long id, String name) {
         this.id = id;
         this.name = name;
-        this.books = books;
     }
 }

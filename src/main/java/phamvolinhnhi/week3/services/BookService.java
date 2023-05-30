@@ -23,12 +23,7 @@ public class BookService {
     public void deleteBook(Long id){
         bookRepository.deleteById(id);
     }
-    public void updateBook(Long id, Book book){
-        Book edit = getBookById(id);
-        edit.setAuthor(book.getAuthor());
-        edit.setCategory(book.getCategory());
-        edit.setPrice(book.getPrice());
-        edit.setTitle(book.getTitle());
-        bookRepository.save(edit);
+    public void updateBook(Book book){
+        bookRepository.save(book);
     }
 }

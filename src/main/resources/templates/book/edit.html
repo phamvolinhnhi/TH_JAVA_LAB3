@@ -27,9 +27,9 @@
     </div>
     <div class="col-6 mb-3">
       <label class="form-label" for="category">Category:</label>
-      <select class="form-control" name="category.id" id="category">
-        <option value="${book.category.id}" th:text="${book.category.name}"></option>
-        <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
+        <select class="form-control" name="category.id" id="category" th:field="*{category.id}">
+        <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"
+        th:selected = "${category.id == 1}"></option>
       </select>
       <span class="text-danger" th:if="${#fields.hasErrors('category')}" th:errors="*{category}"></span>
     </div>
