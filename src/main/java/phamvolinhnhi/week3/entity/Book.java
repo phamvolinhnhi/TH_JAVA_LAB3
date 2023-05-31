@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 import phamvolinhnhi.week3.validator.annotation.ValidCategoryId;
+import phamvolinhnhi.week3.validator.annotation.ValidUserId;
 
 @Data
 @Entity
@@ -30,6 +31,13 @@ public class Book {
     @JoinColumn(name = "category_id")
     @ValidCategoryId
     private Category category;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @ValidUserId
+    private User user;
+
+
 //
 //    public Long getId() {
 //        return id;

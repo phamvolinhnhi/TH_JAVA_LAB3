@@ -48,26 +48,21 @@ public class BookController {
     }
 
     @GetMapping("/edit/{id}")
-    public String editBookForm(@PathVariable("id") Long id, Model model) {
-        Book editBook = bookService.getBookById(id);
-        if(editBook == null){
-            return "not-found";
-        }
-        else{
-            model.addAttribute("book", editBook);
-            model.addAttribute("categories", categoryService.getAllCategories());
-            return "book/edit";
-        }
+    public String showEditBookForm(@PathVariable("id") Long id, Model model) {
+        Book book = bookService.getBookById(id);
+        model.addAttribute("book", book);
+        model.addAttribute("categories", categoryService.getAllCategories());
 
+        return "book/edit"; // Trả về trang view để hiển thị thông tin đầu sách cần chỉnh sửa
     }
-    @PostMapping("/edit")
-    public String editBook(@Valid @ModelAttribute("book") Book book, BindingResult result, Model model) {
-        if(result.hasErrors()) {
-            model.addAttribute("categories", categoryService.getAllCategories());
 
+    @PostMapping("/edit")
+    public String editBook(@ModelAttribute("book") @Valid Book book, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("book", book);
+            model.addAttribute("categories", categoryService.getAllCategories());
             return "book/edit";
-        }
-        else {
+        } else {
             bookService.updateBook(book);
             return "redirect:/books";
         }
